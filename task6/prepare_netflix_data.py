@@ -19,9 +19,10 @@ def prepare_data(df):
     if 'customer_id' in df_clean.columns:
         df_clean = df_clean.drop('customer_id', axis=1)
     
-    # gender -> бинарный
+    # gender -> one-hot
     if 'gender' in df_clean.columns:
-        df_clean['gender_male'] = (df_clean['gender'] == 'Male').astype(int)
+        gender_dummies = pd.get_dummies(df_clean['gender'], prefix='gender')
+        df_clean = pd.concat([df_clean, gender_dummies], axis=1)
         df_clean = df_clean.drop('gender', axis=1)
         print("Закодирован gender")
     
